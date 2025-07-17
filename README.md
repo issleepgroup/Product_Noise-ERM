@@ -11,7 +11,8 @@
 - Built with PyTorch, and easy to integrate into existing deep learning pipelines.
 - Supports multiple datasets (e.g., MNIST, CIFAR-10) with modular code design.
 
-## OUTPUT_PERTURBATION_Section_5.1
+## OUTPUT_PERTURBATION
+
 
 ### Installation
 Navigate to the ''datasets'' directory.
@@ -36,7 +37,7 @@ python kddcup99.py
 ```
 
 
-## OBJECTIVE_PERTURBATION_Section_5.2
+## OBJECTIVE_PERTURBATION
 
 ### Installation
 Navigate to the ''datasets'' directory.
@@ -59,7 +60,7 @@ Run algorithms on one dataset using the following command.
 python gridsearch.py [ALG_NAME] [DATASET_NAME] [LR/SVM]
 ```
 
-## DPSGD Section_5.3
+## DPSGD Section
 ### Installation
 
 Install all required Python packages using the `pip install` command:
