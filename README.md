@@ -27,15 +27,13 @@ Adult, KDDCup99, MNIST, Synthetic-H, Real-sim, RCV1
 ```
 
 ### How to Run
-Navigate to this repository.
+Navigate to this repository. 
 
 Run the python file named after the dataset.
 
 ```bash
-python gridsearch.py [ALG_NAME] [DATASET_NAME] [LR/SVM]
+python kddcup99.py
 ```
-
-
 
 
 ## OBJECTIVE_PERTURBATION_Section_5.2
