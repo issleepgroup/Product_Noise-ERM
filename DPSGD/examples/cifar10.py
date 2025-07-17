@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# This file is prepared for anonymous submission or public release.
+# Original license, authorship, and institutional references have been removed for anonymity.
+# Annotated for clarity and educational understanding.
+# No changes were made to the algorithmic logic.
+
+# Import necessary libraries
 import argparse
 import os
 import shutil
