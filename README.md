@@ -26,6 +26,15 @@ If you want to download one of the datasets, just replace ''all'' with the name 
 Adult, KDDCup99, MNIST, Synthetic-H, Real-sim, RCV1
 ```
 
+### How to Run
+Navigate to this repository.
+
+Run the python file named after the dataset.
+
+```bash
+python gridsearch.py [ALG_NAME] [DATASET_NAME] [LR/SVM]
+```
+
 
 
 
