@@ -11,15 +11,14 @@
 - Built with PyTorch, and easy to integrate into existing deep learning pipelines.
 - Supports multiple datasets (e.g., MNIST, CIFAR-10) with modular code design.
 
-## Installation
+## DPSGD
+### Installation
 
 You can install all required Python packages using the `pip install` command:
 
 ```bash
-pip install opacus torch torchvision numpy tqdm
+pip install opacus, torch, torchvision, numpy, tqdm
 ```
-## How to Run
-
 ### Usage
 
 Use the following command to run the training script with the corresponding dataset:
@@ -32,11 +31,7 @@ python examples/imdb.py         # For IMDB sentiment dataset
 python examples/movielens.py    # For MovieLens dataset
 ```
 
-### Steps
-
-
-
-Dependencies
+### Dependencies
 - This project is based on the PyTorch framework and depends on the following Python packages:
 - torch – Core deep learning library
 - torchvision – Utilities for common vision datasets
