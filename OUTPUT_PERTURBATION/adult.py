@@ -1,129 +1,153 @@
+# Import required libraries
 import os
 import numpy as np
-import copy
-import math
-import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend for safe script execution
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
+import math
+import copy
+import pandas as pd
 from sklearn.metrics import accuracy_score
 from datetime import datetime
+from sklearn.preprocessing import StandardScaler
 
+# ------------------------
+# Load MNIST dataset
+# ------------------------
+dataset_location = '../datasets/data'
 
-# load data
-FILENAME_X = 'adult_processed_x.npy'
-FILENAME_Y = 'adult_processed_y.npy'
-data_location = '../datasets/data'
+# Load preprocessed features
+features = np.load(os.path.join(dataset_location, 'mnist_processed_x.npy'))
+features = features.astype(float)
 
+# Load one-hot encoded labels
+labels = np.load(os.path.join(dataset_location, 'mnist_processed_y.npy'))
+labels = labels.astype(float)
 
-X = np.load(os.path.join(data_location, FILENAME_X))
-y = np.load(os.path.join(data_location, FILENAME_Y))
+# ------------------------
+# Prepare training and test sets
+# ------------------------
+training_size = int(features.shape[0] * 0.8)
 
+# Convert one-hot encoded labels to integer class labels
+labels_ = []
+for row in labels:
+    for i in range(len(row)):
+        if row[i] == 1:
+            labels_.append(i)
 
-# split data into train and test sets
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+training_labels = labels_[:training_size]
+testing_labels = labels_[training_size:]
+training_features = features[:training_size]
+testing_features = features[training_size:]
 
-
-# train scikit-learn classifier on un-normalized data, get non-private accuracy
+# ------------------------
+# Train baseline (non-private) model
+# ------------------------
 print("Training scikit-learn classifier on un-normalized data")
 classifier = LogisticRegression()
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
-accuracy = round(accuracy_score(y_test, y_pred), 8)
+classifier.fit(training_features, training_labels)
+y_pred = classifier.predict(testing_features)
+accuracy = accuracy_score(testing_labels, y_pred)
 print("Accuracy before output perturbation: {:.8f}".format(accuracy))
 
-
+# ------------------------
 # Set differential privacy hyperparameters
+# ------------------------
+lambda_param = 0.0001  # Regularization strength
+number_of_samples = training_features.shape[0]
 L = 1  # Lipschitz constant
-delta = 1e-5
-lambda_param = 0.01  # Regularization parameter
-n_samples = X_train.shape[0]
-sensitivity = (2 * L) / (n_samples * lambda_param)
+sensitivity = (2 * L) / (number_of_samples * lambda_param)
+delta = 1e-5  # δ parameter in (ε, δ)-DP
 
-
-# Epsilon values to test
+# Define ε values to test
 all_eps_list = [0.0001, 0.000316227766016838, 0.001, 0.00316227766016838, 0.01, 0.0316227766016838, 0.1]
 
-
-# save results
+# Initialize result containers
 epsilons = []
 gauss_acc_list = []
 gauss_std_list = []
 alt_acc_list = []
 alt_std_list = []
 
-
-# Experiment 1: Gaussian noise perturbation
+# ------------------------
+# Experiment 1: Gaussian noise output perturbation
+# ------------------------
 print("\nExperiment 1: Gaussian noise perturbation")
 for epsilon in all_eps_list:
     acc_list = []
+    for i in range(10):  # Repeat for statistical reliability
+        # Train model on training data
+        logreg = LogisticRegression(solver='lbfgs', max_iter=10000)
+        logreg.fit(training_features, training_labels)
+        f_non_priv = logreg.coef_[0]  # Extract learned coefficients
 
-    # generate noise
-    # repeat experiment 10 times to get average accuracy and std
-    # predict on test data with perturbed model
-    for i in range(10):
-        C = 1 / lambda_param
-        logreg = LogisticRegression(penalty='l2', solver='saga', max_iter=500)
-        logreg.fit(X_train, y_train)
-        f_non_priv = logreg.coef_[0]
-
-        # generate noise and add to model
+        # Compute Gaussian noise scale (σ)
         sigma = (np.sqrt(2 * np.log(1.25 / delta)) / epsilon) * sensitivity
-        f_priv = f_non_priv + np.random.normal(0, sigma, len(f_non_priv))
+        noise = np.random.normal(0, sigma, len(f_non_priv))
+        f_priv = f_non_priv + noise  # Add Gaussian noise
 
+        # Replace original model weights with perturbed version
         classifier_copy = copy.deepcopy(classifier)
         classifier_copy.coef_ = np.array([f_priv])
 
-        y_pred_priv = classifier_copy.predict(X_test)
-        accuracy_priv = accuracy_score(y_test, y_pred_priv)
+        # Predict and evaluate accuracy
+        y_pred_priv = classifier_copy.predict(testing_features)
+        accuracy_priv = accuracy_score(testing_labels, y_pred_priv)
         acc_list.append(accuracy_priv)
 
+    # Record average and std deviation
     avg_accuracy = np.mean(acc_list)
     std_accuracy = np.std(acc_list)
-
     print(f"Epsilon: {epsilon:.8f}, Gaussian Average Accuracy: {avg_accuracy:.8f}, Std: {std_accuracy:.8f}")
-    epsilons.append(round(epsilon, 8))
-    gauss_acc_list.append(round(avg_accuracy, 8))
-    gauss_std_list.append(round(std_accuracy, 8))
+    epsilons.append(epsilon)
+    gauss_acc_list.append(avg_accuracy)
+    gauss_std_list.append(std_accuracy)
 
-
-# Experiment 2: Our alternative noise proposed product noise
+# ------------------------
+# Experiment 2: Alternative product noise perturbation
+# ------------------------
 print("\nExperiment 2: Our alternative noise")
 for idx, epsilon in enumerate(all_eps_list):
     acc_list = []
     for i in range(10):
-        C = 1 / lambda_param
-        logreg = LogisticRegression(penalty='l2', solver='saga', max_iter=500)
-        logreg.fit(X_train, y_train)
+        # Train model
+        logreg = LogisticRegression(solver='lbfgs', max_iter=10000)
+        logreg.fit(training_features, training_labels)
         f_non_priv = logreg.coef_[0]
 
-        # generate noise and add to model
+        # Compute theoretical bound for product noise
         k = 1000
-        m = X_train.shape[1]
+        m = training_features.shape[1]  # Number of features
         t_squared = 2 * (k ** (4 / m)) * (((m / 4) + (3 / 2)) ** (1 + 4 / m) / (math.e ** (1 + 2 / m)))
         std_dev_out = sensitivity * math.sqrt(t_squared) / epsilon
+
+        # Generate random unit direction and magnitude
         h = np.random.randn(m)
         h = h / np.linalg.norm(h)
         z = np.abs(np.random.normal(0, 1))
         noise = std_dev_out * z * h
 
+        # Add product noise to model coefficients
         f_priv = f_non_priv + noise
         classifier_copy = copy.deepcopy(classifier)
         classifier_copy.coef_ = np.array([f_priv])
 
-        y_pred_priv = classifier_copy.predict(X_test)
-        accuracy_priv = accuracy_score(y_test, y_pred_priv)
+        # Predict and evaluate
+        y_pred_priv = classifier_copy.predict(testing_features)
+        accuracy_priv = accuracy_score(testing_labels, y_pred_priv)
         acc_list.append(accuracy_priv)
 
+    # Record average and std deviation
     avg_accuracy = np.mean(acc_list)
     std_accuracy = np.std(acc_list)
     print(f"Epsilon: {epsilon:.8f}, Alternative Average Accuracy: {avg_accuracy:.8f}, Std: {std_accuracy:.8f}")
-    alt_acc_list.append(round(avg_accuracy, 8))
-    alt_std_list.append(round(std_accuracy, 8))
+    alt_acc_list.append(avg_accuracy)
+    alt_std_list.append(std_accuracy)
 
-
-# save as csv
+# ------------------------
+# Save results to CSV
+# ------------------------
 df = pd.DataFrame({
     "Gaussian_Acc": gauss_acc_list,
     "Gaussian_Std": gauss_std_list,
@@ -133,9 +157,9 @@ df = pd.DataFrame({
 }, index=epsilons)
 df.index.name = "epsilon"
 
-
+# Add timestamp to filename
 timestamp = datetime.now().strftime("%H-%M-%S")
 save_location = '../op_results/'
-output_csv = save_location + f"op_lr_adult_results_{lambda_param}_{timestamp}.csv"
+output_csv = save_location + f"op_lr_mnist_results_{lambda_param}_{timestamp}.csv"
 df.to_csv(output_csv)
 print(f"\nResults saved to {output_csv}")
