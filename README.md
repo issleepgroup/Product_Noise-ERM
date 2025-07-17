@@ -11,7 +11,35 @@
 - Built with PyTorch, and easy to integrate into existing deep learning pipelines.
 - Supports multiple datasets (e.g., MNIST, CIFAR-10) with modular code design.
 
-## DPSGD
+## OUTPUT_PERTURBATION_Section_5.1
+
+
+
+
+## OBJECTIVE_PERTURBATION_Section_5.2
+
+### Installation
+Navigate to the ''datasets'' directory.
+
+Run the following command line to download and preprocess all the benchmark datasets automatically.
+```bash
+python main_preprocess.py all
+```
+If you want to download one of the datasets, just replace ''all'' with the name of the dataset. All available datasets are listed as following.
+
+```bash
+MNIST, Synthetic-H, Real-sim, RCV1
+```
+### How to Run
+Navigate to this repository.
+
+Run algorithms on one dataset using the following command.
+
+```bash
+python gridsearch.py [ALG_NAME] [DATASET_NAME] [LR/SVM]
+```
+
+## DPSGD Section_5.3
 ### Installation
 
 Install all required Python packages using the `pip install` command:
@@ -19,7 +47,7 @@ Install all required Python packages using the `pip install` command:
 ```bash
 pip install opacus, torch, torchvision, numpy, tqdm
 ```
-### Usage
+### How to Run
 Download the Opacus library and replace the optimizer.py and privacy_engine.py files within it
 
 Use the following command to run the training script with the corresponding dataset:
@@ -41,6 +69,8 @@ python examples/movielens.py    # For MovieLens dataset
 - tqdm – Command-line progress bar utility
 - math – Python built-in module (no need to install)
 
-## DPML_CONVEX
 
-## OUTPUT_PERTURBATION
+
+
+
+
