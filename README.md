@@ -14,7 +14,7 @@
 ## DPSGD
 ### Installation
 
-You can install all required Python packages using the `pip install` command:
+Install all required Python packages using the `pip install` command:
 
 ```bash
 pip install opacus, torch, torchvision, numpy, tqdm
