@@ -25,11 +25,11 @@ pip install opacus torch torchvision numpy tqdm
 Use the following command to run the training script with the corresponding dataset:
 
 ```bash
-python mnist.py        # For MNIST
-python cifar10.py      # For CIFAR-10
-python adult.py        # For Adult dataset
-python imdb.py         # For IMDB sentiment dataset
-python movielens.py    # For MovieLens dataset
+python examples/mnist.py        # For MNIST
+python examples/cifar10.py      # For CIFAR-10
+python examples/adult.py        # For Adult dataset
+python examples/imdb.py         # For IMDB sentiment dataset
+python examples/movielens.py    # For MovieLens dataset
 ```
 
 ### Steps
