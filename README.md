@@ -21,6 +21,7 @@ pip install opacus, torch, torchvision, numpy, tqdm
 ```
 ### Usage
 Download the Opacus library and replace the optimizer.py and privacy_engine.py files within it
+
 Use the following command to run the training script with the corresponding dataset:
 
 ```bash
