@@ -13,6 +13,19 @@
 
 ## OUTPUT_PERTURBATION_Section_5.1
 
+### Installation
+Navigate to the ''datasets'' directory.
+
+Run the following command line to download and preprocess all the benchmark datasets automatically.
+```bash
+python main_preprocess.py all
+```
+If you want to download one of the datasets, just replace ''all'' with the name of the dataset. All available datasets are listed as following.
+
+```bash
+Adult, KDDCup99, MNIST, Synthetic-H, Real-sim, RCV1
+```
+
 
 
 
