@@ -405,7 +405,7 @@ class DPOptimizer(Optimizer):
         h = [item / magnitude for item in shape_list]  # Normalize the vector so that it is on the unit sphere
         # the number of parameters
         M =  sum(p.numel() for p in param_list)
-        sensitivity = np.sqrt(2) * max_grad_norm
+        sensitivity = 2 * max_grad_norm
 
         t_squared = 2 * (k ** ( 4/M )) * (( M/4 + 3/2 ) **( 1 + 4 / M) / (torch.e ** (1 + 2 / M)))
         sigma_squared = (sensitivity ** 2 / initial_epsilon ** 2 ) * t_squared
