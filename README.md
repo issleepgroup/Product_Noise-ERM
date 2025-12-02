@@ -1,6 +1,7 @@
-# Product Noise ERM
+# Product-Noise-ERM
 
 [![Conference](https://img.shields.io/badge/SIGMOD-2026-blue)](https://sigmod2026.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Official implementation of the paper: **"Privacy Loss of Noise Perturbation via Concentration Analysis of A Product Measure"** (SIGMOD 2026).
 
@@ -12,22 +13,23 @@ We provide implementations for both:
 * **Convex ERM**: Logistic Regression, SVM (via Output & Objective Perturbation).
 * **Non-convex ERM**: Deep Neural Networks (via Gradient Perturbation / DPSGD).
 
-> **Note**: If you find this code useful, please cite our paper. See [Citation](#citation) below.
+> **Note**: If you find this code useful for your research, please cite our paper. See [Citation](#-citation) below.
 
 ## Key Features
 
 - Implements a novel product noise mechanism to perturb gradients or model parameters.
-- Enhances privacy protection during local training on client-side data.
-- Built with PyTorch, and easy to integrate into existing deep learning pipelines.
-- Supports multiple datasets (e.g., MNIST, CIFAR-10) with modular code design.
+- Enhances privacy protection for sensitive training data.
+- Built with PyTorch, designed for easy integration into existing deep learning pipelines.
+- Supports multiple datasets (e.g., MNIST, CIFAR-10, Adult, RCV1) with modular code design.
 
-## OUTPUT_PERTURBATION
+---
 
+## 1. OUTPUT PERTURBATION
 
 ### Installation
-Navigate to the ''datasets'' directory.
+1. Navigate to the `datasets` directory.
+2. Run the following command to download and preprocess all benchmark datasets automatically:
 
-Run the following command line to download and preprocess all the benchmark datasets automatically.
 ```bash
 python main_preprocess.py all
 ```
@@ -105,11 +107,12 @@ python examples/movielens.py    # For MovieLens dataset
 If you use this code or our results in your research, please cite our paper:
 
 ```bibtex
-@article{product_noise_dp,
+@inproceedings{product_noise_dp,
   title={Privacy Loss of Noise Perturbation via Concentration Analysis of A Product Measure},
-  author={Your Name and Co-authors},
-  journal={Conference/Journal Name},
-  year={2025}
+  author={Liu, Shuainan and Ji, Tianxi and Fang, Zhongshuo and Wei, Lu and Li, Pan},
+  booktitle={Proceedings of the 2026 International Conference on Management of Data (SIGMOD '26)},
+  year={2026},
+  publisher={ACM}
 }
 
 
