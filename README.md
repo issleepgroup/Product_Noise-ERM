@@ -49,7 +49,7 @@ python kddcup99.py
 ```
 
 
-## OBJECTIVE_PERTURBATION
+## OBJECTIVE PERTURBATION
 
 ### Installation
 Navigate to the ''datasets'' directory.
