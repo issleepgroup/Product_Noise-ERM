@@ -24,7 +24,7 @@ We provide implementations for both:
 
 ---
 
-## 1. OUTPUT PERTURBATION
+## OUTPUT PERTURBATION
 
 ### Installation
 1. Navigate to the `datasets` directory.
