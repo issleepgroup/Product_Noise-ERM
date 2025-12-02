@@ -1,8 +1,18 @@
 # Product Noise ERM
 
+[![Conference](https://img.shields.io/badge/SIGMOD-2026-blue)](https://sigmod2026.org/)
+
+Official implementation of the paper: **"Privacy Loss of Noise Perturbation via Concentration Analysis of A Product Measure"** (SIGMOD 2026).
+
 ## Overview
 
-**Product Noise ERM** is a research-oriented project that focuses on protecting user privacy during machine learning model training. By introducing a custom-designed product noise mechanism, this project enables privacy-preserving empirical risk minimization (ERM) beyond traditional differential privacy approaches.
+This repository contains the code for our proposed **Product Noise** mechanism. Unlike classic Gaussian mechanisms, our approach leverages the concentration analysis of a product measure to achieve a superior **privacy-utility trade-off**, especially in **high-dimensional** settings.
+
+We provide implementations for both:
+* **Convex ERM**: Logistic Regression, SVM (via Output & Objective Perturbation).
+* **Non-convex ERM**: Deep Neural Networks (via Gradient Perturbation / DPSGD).
+
+> **Note**: If you find this code useful, please cite our paper. See [Citation](#citation) below.
 
 ## Key Features
 
@@ -89,6 +99,19 @@ python examples/movielens.py    # For MovieLens dataset
 - numpy – Numerical computing library
 - tqdm – Command-line progress bar utility
 - math – Python built-in module (no need to install)
+
+## 📌 Citation
+
+If you use this code or our results in your research, please cite our paper:
+
+```bibtex
+@article{product_noise_dp,
+  title={Privacy Loss of Noise Perturbation via Concentration Analysis of A Product Measure},
+  author={Your Name and Co-authors},
+  journal={Conference/Journal Name},
+  year={2025}
+}
+
 
 
 
