@@ -1,6 +1,6 @@
 # Product-Noise-ERM
 
-[![Conference](https://img.shields.io/badge/SIGMOD-2026-blue)](https://sigmod2026.org/)
+[![Conference](https://img.shields.io/badge/SIGMOD-2026-blue)](https://2026.sigmod.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Official implementation of the paper: **"Privacy Loss of Noise Perturbation via Concentration Analysis of A Product Measure"** (SIGMOD 2026).
