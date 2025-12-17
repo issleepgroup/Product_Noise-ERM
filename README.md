@@ -107,12 +107,11 @@ python examples/movielens.py    # For MovieLens dataset
 If you use this code or our results in your research, please cite our paper:
 
 ```bibtex
-@inproceedings{product_noise_dp,
+@article{liu2025privacy,
   title={Privacy Loss of Noise Perturbation via Concentration Analysis of A Product Measure},
   author={Liu, Shuainan and Ji, Tianxi and Fang, Zhongshuo and Wei, Lu and Li, Pan},
-  booktitle={Proceedings of the 2026 International Conference on Management of Data (SIGMOD '26)},
-  year={2026},
-  publisher={ACM}
+  journal={arXiv preprint arXiv:2512.06253},
+  year={2025}
 }
 
 
